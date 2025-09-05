@@ -28,6 +28,10 @@ class Bot(Client):
             workers=50,
             plugins={"root": "plugins"},
             sleep_threshold=5,
+    def run_flask():
+    # Koyeb requires host 0.0.0.0 and a fixed port
+    flask_app.run(host="0.0.0.0", port=8080)
+    
         )
 
     async def start(self):
