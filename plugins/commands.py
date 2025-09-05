@@ -45,14 +45,23 @@ async def channel_info(bot, message):
         raise ValueError("Unexpected type of CHANNELS")
 
     text = '📑 **Indexed channels/groups**\n'
-    for channel in channels:
-        chat = await bot.get_chat(channel)
-        if chat.username:
-            text += '\n@' + chat.username
-        else:
-            text += '\n' + chat.title or chat.first_name
 
-    text += f'\n\n**Total:** {len(CHANNELS)}'
+    for channel in channels:
+        try:
+            # Ensure correct type
+            if str(channel).startswith("-100"):
+                channel = int(channel)
+
+            chat = await bot.get_chat(channel)
+
+            if chat.username:
+                text += '\n@' + chat.username
+            else:
+                text += '\n' + (chat.title or chat.first_name)
+        except Exception as e:
+            text += f"\n⚠️ Could not fetch info for `{channel}`: {e}"
+
+    text += f'\n\n**Total:** {len(channels)}'
 
     if len(text) < 4096:
         await message.reply(text)
@@ -62,6 +71,7 @@ async def channel_info(bot, message):
             f.write(text)
         await message.reply_document(file)
         os.remove(file)
+        
 
 
 @Client.on_message(filters.command('total') & filters.user(ADMINS))
