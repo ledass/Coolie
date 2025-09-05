@@ -45,6 +45,11 @@ class Bot(Client):
         await super().stop()
         print("Bot stopped. Bye.")
 
+   if __name__ == "__main__":
+    # Start Flask in the background
+    Thread(target=run_flask, daemon=True).start()
 
-app = Bot()
-app.run()
+    # Start the Pyrogram bot
+    app = Bot()
+    app.run()
+
