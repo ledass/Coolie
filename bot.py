@@ -13,6 +13,8 @@ from pyrogram.raw.all import layer
 from pyromod import listen
 from utils import Media
 from info import SESSION, API_ID, API_HASH, BOT_TOKEN
+from threading import Thread
+from web import app as flask_app  # Import your Flask app
 
 
 class Bot(Client):
